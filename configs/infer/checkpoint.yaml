@@ -1,0 +1,2 @@
+inference:
+  checkpoint: /home/cvip/jun/kidnap/tailing/result/20210708-171304/TSViT_best.ckp
