@@ -2,5 +2,5 @@ img_w: 1920
 img_h: 1080
 grid_size: 512
 raw_data: /home/cvip/jun/kidnap/fps/fps2
-out_dir: /home/cvip/jun/kidnap/dataset/fps2_512t
+out_dir: /home/cvip/jun/kidnap/dataset/fps2_512
 blank: 4
