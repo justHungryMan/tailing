@@ -6,11 +6,8 @@ dataset:
     drop_last: True
     preprocess:
       - type: horizontal
-      - type: tensor
 
 
   test:
     path : /home/cvip/jun/kidnap/dataset/fps2_512/test
     batch_size: 32
-    preprocess:
-      - type: tensor

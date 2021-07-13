@@ -61,7 +61,7 @@ def preprocessing(flags):
                     out_dir = os.path.join(out_dir, filename)
                     if not os.path.exists(out_dir):
                         os.makedirs(out_dir)
-                    out_filename = os.path.join(out_dir, os.path.basename(os.path.dirname(os.path.dirname(file)))+ '_' + str(start_idx).zfill(5) + '.npy')
+                    out_filename = os.path.join(out_dir, os.path.basename(os.path.dirname(file))+ '_' + str(start_idx).zfill(5) + '.npy')
                     grid = torch.zeros(9, flags.grid_size, flags.grid_size)
                     for idx in range(9):
                         detection_result = json.load(open(json_files[start_idx + idx]))

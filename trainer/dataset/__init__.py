@@ -8,12 +8,15 @@ from .gridDataset import gridDatasetTrain, gridDatasetTest
 def create(config, world_size=1, local_rank=-1, mode='train'):
     
     params = config[mode]
-    transformers = transforms.Compose([preprocess(t) for t in params['preprocess']] )
-
+    if params.get('preprocess', None) is not None:
+        transformers = transforms.Compose([preprocess(t) for t in params['preprocess']] )
+    else:
+        transformers = None
+        
     if mode == 'train':
-        dataset = gridDatasetTrain(params['path'])
+        dataset = gridDatasetTrain(params['path'], transformers=transformers)
     elif mode == 'test':
-        dataset = gridDatasetTest(params['path'])
+        dataset = gridDatasetTest(params['path'], transformers=transformers)
     else:
         raise AttributeError(f'not support dataset mode: {mode}')
 

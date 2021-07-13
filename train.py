@@ -60,7 +60,9 @@ def main(flags):
     model.to(device=device, non_blocking=True)
 
     image_size = C.get()['architecture']['params']['image_size']
-    model_summary(model, (1, image_size, image_size))
+
+    if flags.is_master:
+        model_summary(model, (1, image_size, image_size))
 
     if flags.local_rank >= 0:
         model = DDP(model, device_ids=[flags.local_rank], output_device=flags.local_rank)
@@ -104,11 +106,12 @@ def main(flags):
                 best_acc = test_acc
                 best_epoch = epoch
                 best_history = report
-                torch.save({
-                    'epoch': epoch,
-                    'model': model.state_dict(),
-                }, os.path.join(flags.save_dir, f'TSViT_best.ckp'))
-
+                if flags.save_dir is not None:
+                    torch.save({
+                        'epoch': epoch,
+                        'model': model.state_dict(),
+                    }, os.path.join(flags.save_dir, f'TSViT_best.ckp'))
+            logging.info(f'[Best] Acc: {best_acc * 100}% Epochs: {best_epoch}')
             # tensorboard
             summary.add_scalar("Loss/train", train_loss, epoch)
             summary.add_scalar("Acc/train", train_acc, epoch)
@@ -196,5 +199,5 @@ if __name__ == '__main__':
 
     history = main(flags)
 
-    logging.info(f'[Done] best accuracy:{(history["best_acc"]) * 100:.2f} epoch: {history["best_epoch"]}')
+    logging.info(f'[Done] best accuracy:{(history["best_acc"]) * 100:.2f}% epoch: {history["best_epoch"]}')
     print(history["best_report"])
